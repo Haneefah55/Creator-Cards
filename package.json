@@ -12,7 +12,7 @@
     "test": "set USE_MOCK_MODEL=1 && mocha --recursive --require dotenv/config",
     "build": "npm install",
     "start": "node app.js",
-    "dev": "node app.js"
+    "dev": "node app.js",
     "prepare": "husky",
     "commitlint": "commitlint --edit",
     "sync-envs": "node sync-env-files"
