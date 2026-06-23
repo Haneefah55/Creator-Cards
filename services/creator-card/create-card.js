@@ -29,9 +29,27 @@ const createSpec = `root {
 // Parse once outside the function
 const parsedSpec = validator.parse(createSpec);
 
+function lowercaseKeys(obj) {
+  if (Array.isArray(obj)) {
+    return obj.map(lowercaseKeys);
+  }
+
+  if (obj && typeof obj === 'object') {
+    return Object.keys(obj).reduce((acc, key) => {
+      acc[key.toLowerCase()] = lowercaseKeys(obj[key]);
+      return acc;
+    }, {});
+  }
+
+  return obj;
+}
+
 async function createCreatorCard(serviceData) {
+
+  //convert all input to lowercase
+  const normalizeBody = lowercaseKeys(serviceData)
   // Validate fields
-  const validatedData = validator.validate(serviceData, parsedSpec);
+  const validatedData = validator.validate(normalizeBody, parsedSpec);
 
   let { title, slug, access_type, access_code } = validatedData;
 
