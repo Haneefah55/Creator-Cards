@@ -9,7 +9,7 @@ module.exports = createHandler({
     const response = await createCreatorCard(rc.body);
     return {
       status: helpers.http_statuses.HTTP_200_OK,
-      message: "Creator Card Created Successfully"
+      message: "Creator Card Created Successfully",
       data: response,
     };
   },
