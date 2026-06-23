@@ -41,6 +41,7 @@ async function createCreatorCard(serviceData) {
   // Validate fields
   const validatedData = validator.validate(normalizeBody, parsedSpec);
 
+  console.log("validateData", validatedData)
 
 // validate links array
 if (validatedData.links) {
