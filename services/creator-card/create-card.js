@@ -9,18 +9,8 @@ const createSpec = `root {
   description string maxLength(500)
   slug string minLength(5) maxLength(50)
   creator_reference string required length(20)
-  links array {
-    title string required minLength(1) maxLength(100)
-    url string required maxLength(200)
-  }
-  service_rates object {
-    currency enum(NGN, USD, GBP, GHS) required
-    rates array required {
-      name string required minLength(3) maxLength(100)
-      description string maxLength(250)
-      amount number required min(1)
-    }
-  }
+  links any
+  service_rates any
   status enum(draft, published) required
   access_type enum(public, private)
   access_code string length(6)
@@ -50,6 +40,41 @@ async function createCreatorCard(serviceData) {
   const normalizeBody = lowercaseKeys(serviceData)
   // Validate fields
   const validatedData = validator.validate(normalizeBody, parsedSpec);
+
+
+// validate links array
+if (validatedData.links) {
+  for (const link of validatedData.links) {
+    if (!link.title || link.title.length < 1 || link.title.length > 100) {
+      throwAppError('Each link must have a valid title', 'LK01');
+    }
+    if (!link.url || (!link.url.startsWith('http://') && !link.url.startsWith('https://'))) {
+      throwAppError('Each link must have a valid url starting with http:// or https://', 'LK02');
+    }
+  }
+}
+
+// validate service_rates
+if (validatedData.service_rates) {
+  const { currency, rates } = validatedData.service_rates;
+  const validCurrencies = ['NGN', 'USD', 'GBP', 'GHS'];
+  if (!validCurrencies.includes(currency)) {
+    throwAppError('Invalid currency', 'SR01');
+  }
+  if (!rates || rates.length === 0) {
+    throwAppError('service_rates.rates must not be empty', 'SR02');
+  }
+  for (const rate of rates) {
+    if (!rate.name || rate.name.length < 3 || rate.name.length > 100) {
+      throwAppError('Each rate must have a valid name', 'SR03');
+    }
+    if (!rate.amount || !Number.isInteger(rate.amount) || rate.amount < 1) {
+      throwAppError('Each rate amount must be a positive integer', 'SR04');
+    }
+  }
+}
+
+  
 
   let { title, slug, access_type, access_code } = validatedData;
 
