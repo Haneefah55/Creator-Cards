@@ -3,7 +3,7 @@ const { throwAppError } = require('@app-core/errors');
 const { ulid } = require('ulid');
 const { CreatorCard } = require('@app/models');
 
-
+{/***
 const createSpec = `root {
   title string required minLength(3) maxLength(100)
   description string maxLength(500)
@@ -11,6 +11,32 @@ const createSpec = `root {
   creator_reference string required length(20)
   links any
   service_rates any
+  status enum(draft, published) required
+  access_type enum(public, private)
+  access_code string length(6)
+}`;
+**/}
+
+const createSpec = `root {
+  title string required minLength(3) maxLength(100)
+  description string maxLength(500)
+  slug string minLength(5) maxLength(50)
+  creator_reference string required length(20)
+
+  links array {
+    title string required minLength(1) maxLength(100)
+    url string required maxLength(200)
+  }
+
+  service_rates object {
+    currency string required
+    rates array {
+      name string required minLength(3) maxLength(100)
+      description string maxLength(250)
+      amount number required min(1)
+    }
+  }
+
   status enum(draft, published) required
   access_type enum(public, private)
   access_code string length(6)
