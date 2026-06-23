@@ -23,17 +23,17 @@ const createSpec = `root {
   slug string minLength(5) maxLength(50)
   creator_reference string required length(20)
 
-  links array {
-    title string required minLength(1) maxLength(100)
-    url string required maxLength(200)
+  links is an array of object {
+    title string required
+    url string required
   }
 
-  service_rates object {
+  service_rates is an object {
     currency string required
-    rates array {
-      name string required minLength(3) maxLength(100)
-      description string maxLength(250)
-      amount number required min(1)
+
+    rates is an array of object {
+      name string required
+      amount number required
     }
   }
 
@@ -41,6 +41,8 @@ const createSpec = `root {
   access_type enum(public, private)
   access_code string length(6)
 }`;
+
+  
 
 // Parse once outside the function
 const parsedSpec = validator.parse(createSpec);
