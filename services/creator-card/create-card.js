@@ -1,7 +1,7 @@
 const validator = require('@app-core/validator');
 const { throwAppError } = require('@app-core/errors');
 const { ulid } = require('ulid');
-const { CreatorCard } = require('@app/models');
+const { CreatorCardModel } = require('@app/models');
 
 
 const createSpec = `root {
@@ -89,7 +89,7 @@ async function createCreatorCard(serviceData) {
   // Validate fields
   //const validatedData = validator.validate(serviceData, parsedSpec);
 
-  //console.log("validateData", validatedData)
+  console.log("normalizeBody", normalizeBody)
 
 // validate links array
 if (normalizeBody.links) {
@@ -178,7 +178,7 @@ if (normalizeBody.service_rates) {
   };
 
   // Save to MongoDB
-  await CreatorCard.create(card);
+  await CreatorCardModel.create(card);
 
   // Serialize: rename _id to id for response
   const result = { ...card, id: card._id };
