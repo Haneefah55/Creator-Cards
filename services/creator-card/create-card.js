@@ -90,11 +90,11 @@ async function createCreatorCard(serviceData) {
 //console.log('SPEC PARSED OK', JSON.stringify(parsedSpec, null, 2));
 
   // Validate fields
-const validatedData = validator.validate(normalizeBody, CreateSpec);
+//const validatedData = validator.validate(normalizeBody, CreateSpec);
 
-  console.log("normalizeBody", normalizeBody)
+  //console.log("normalizeBody", normalizeBody)
   
-  console.log("validatedData", validatedData)
+  //console.log("validatedData", validatedData)
 
 // validate links array
 if (normalizeBody.links) {
@@ -107,17 +107,18 @@ if (normalizeBody.links) {
     }
   }
 }
-
-
-  
-if(!normalizeBody.creator_reference){
-  throwAppError('creator reference is required', 'VALIDATION_ERROR');
-}
+//validate access code
 
 if(normalizeBody.access_code) {
   if(normalizeBody.access_code.length < 6) {
     throwAppError('access_code mst be 6 characters', 'VALIDATION_ERROR');
   }
+}
+
+// validate creator reference
+  
+if(!normalizeBody.creator_reference){
+  throwAppError('creator reference is required', 'VALIDATION_ERROR');
 }
 
 if(normalizeBody.creator_reference.length !== 20){
