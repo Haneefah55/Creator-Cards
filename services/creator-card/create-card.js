@@ -3,6 +3,8 @@ const { throwAppError } = require('@app-core/errors');
 const { ulid } = require('ulid');
 const { CreatorCardModel } = require('@app/models');
 
+const { CreateSpec } = require('@app/services')
+
 
 const createSpec = `root {
   title is a required string {
@@ -83,19 +85,23 @@ async function createCreatorCard(serviceData) {
   //convert all input to lowercase
   const normalizeBody = lowercaseKeys(serviceData)
 
+  
+
 //const parsedSpec = validator.parse(createSpec);
 //console.log('SPEC PARSED OK', JSON.stringify(parsedSpec, null, 2));
 
   // Validate fields
-  //const validatedData = validator.validate(serviceData, parsedSpec);
+const validatedData = validator.validate(normalizeBody, CreateSpec);
 
   console.log("normalizeBody", normalizeBody)
+  
+  console.log("validatedData", validatedData)
 
 // validate links array
 if (normalizeBody.links) {
   for (const link of normalizeBody.links) {
     if (!link.title || link.title.length < 1 || link.title.length > 100) {
-      throwAppError('Each link must have a valid title', 'VALIDATION_ERROR');
+      throwAppError('Each link must have a valid title with maximum length of 100', 'VALIDATION_ERROR');
     }
     if (!link.url || (!link.url.startsWith('http://') && !link.url.startsWith('https://'))) {
       throwAppError('Each link must have a valid url starting with http:// or https://', 'VALIDATION_ERROR');
@@ -107,6 +113,12 @@ if (normalizeBody.links) {
   
 if(!normalizeBody.creator_reference){
   throwAppError('creator reference is required', 'VALIDATION_ERROR');
+}
+
+if(normalizeBody.access_code) {
+  if(normalizeBody.access_code.length < 6) {
+    throwAppError('access_code mst be 6 characters', 'VALIDATION_ERROR');
+  }
 }
 
 if(normalizeBody.creator_reference.length !== 20){
@@ -154,7 +166,7 @@ if (normalizeBody.service_rates) {
 
   // Business rules
   if (access_type === 'private' && !access_code) {
-    throwAppError('access_code is required when access_type is private', 'AC01');
+    throwAppError('access_code is required for private cards', 'AC01');
   }
   if (access_type !== 'private' && access_code) {
     throwAppError('access_code can only be set on private cards', 'AC05');
