@@ -83,17 +83,17 @@ async function createCreatorCard(serviceData) {
   //convert all input to lowercase
   const normalizeBody = lowercaseKeys(serviceData)
 
-const parsedSpec = validator.parse(createSpec);
-console.log('SPEC PARSED OK', JSON.stringify(parsedSpec, null, 2));
+//const parsedSpec = validator.parse(createSpec);
+//console.log('SPEC PARSED OK', JSON.stringify(parsedSpec, null, 2));
 
   // Validate fields
-  const validatedData = validator.validate(serviceData, parsedSpec);
+  //const validatedData = validator.validate(serviceData, parsedSpec);
 
-  console.log("validateData", validatedData)
+  //console.log("validateData", validatedData)
 
 // validate links array
-if (validatedData.links) {
-  for (const link of validatedData.links) {
+if (normalizeBody.links) {
+  for (const link of normalizeBody.links) {
     if (!link.title || link.title.length < 1 || link.title.length > 100) {
       throwAppError('Each link must have a valid title', 'LK01');
     }
@@ -104,8 +104,8 @@ if (validatedData.links) {
 }
 
 // validate service_rates
-if (validatedData.service_rates) {
-  const { currency, rates } = validatedData.service_rates;
+if (normalizeBody.service_rates) {
+  const { currency, rates } = normalizeBody.service_rates;
   const validCurrencies = ['NGN', 'USD', 'GBP', 'GHS'];
   if (!validCurrencies.includes(currency)) {
     throwAppError('Invalid currency', 'SR01');
@@ -125,7 +125,7 @@ if (validatedData.service_rates) {
 
   
 
-  let { title, slug, access_type, access_code } = validatedData;
+  let { title, slug, access_type, access_code } = normalizeBody;
 
   // Default access_type to 'public' if not provided
   if (!access_type) {
@@ -168,7 +168,7 @@ if (validatedData.service_rates) {
   const now = Date.now();
   const card = {
     _id: ulid(),
-    ...validatedData,
+    ...normalizeBody,
     slug,
     access_type,
     access_code: access_code || null,
