@@ -95,21 +95,31 @@ async function createCreatorCard(serviceData) {
 if (normalizeBody.links) {
   for (const link of normalizeBody.links) {
     if (!link.title || link.title.length < 1 || link.title.length > 100) {
-      throwAppError('Each link must have a valid title', 'INVALID_REQUEST_DATA');
+      throwAppError('Each link must have a valid title', 'VALIDATION_ERROR');
     }
     if (!link.url || (!link.url.startsWith('http://') && !link.url.startsWith('https://'))) {
-      throwAppError('Each link must have a valid url starting with http:// or https://', 'INVALID_REQUEST_DATA');
+      throwAppError('Each link must have a valid url starting with http:// or https://', 'VALIDATION_ERROR');
     }
   }
 }
 
+
+  
+if(!normalizeBody.creator_reference){
+  throwAppError('creator reference is required', 'VALIDATION_ERROR');
+}
+
+if(normalizeBody.creator_reference.length !== 20){
+  throwAppError('creator reference is must be 20 characters', 'VALIDATION_ERROR');
+  }
+  
   // validate status
 const validStatuses = ['draft', 'published'];
 
-if (!validStatuses.includes(normalizeBody.status)) {
+if(!validStatuses.includes(normalizeBody.status)) {
   throwAppError(
     `${normalizeBody.status} is not a valid status`,
-    'INVALID_REQUEST_DATA'
+    'VALIDATION_ERROR'
   );
 }
 
@@ -118,17 +128,17 @@ if (normalizeBody.service_rates) {
   const { currency, rates } = normalizeBody.service_rates;
   const validCurrencies = ['NGN', 'USD', 'GBP', 'GHS'];
   if (!validCurrencies.includes(currency)) {
-    throwAppError('Invalid currency', 'INVALID_REQUEST_DATA');
+    throwAppError('Invalid currency', 'VALIDATION_ERROR');
   }
   if (!rates || rates.length === 0) {
-    throwAppError('service_rates.rates must not be empty', 'INVALID_REQUEST_DATA');
+    throwAppError('service_rates.rates must not be empty', 'VALIDATION_ERROR');
   }
   for (const rate of rates) {
     if (!rate.name || rate.name.length < 3 || rate.name.length > 100) {
-      throwAppError('Each rate must have a valid name', 'INVALID_REQUEST_DATA');
+      throwAppError('Each rate must have a valid name', 'VALIDATION_ERROR');
     }
     if (!rate.amount || !Number.isInteger(rate.amount) || rate.amount < 1) {
-      throwAppError('Each rate amount must be a positive integer', 'INVALID_REQUEST_DATA');
+      throwAppError('Each rate amount must be a positive integer', 'VALIDATION_ERROR');
     }
   }
 }
