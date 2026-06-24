@@ -42,4 +42,21 @@ module.exports = {
       throw createErrorData(`Elements of $label must be a valid ${conditionValue}`);
     }
   },
+  [NodeTypes.MAX_LENGTH]: (data, prop, conditionValue) => {
+    if (data[prop] && data[prop].length > conditionValue) {
+      throw createErrorData(`$label must not exceed ${conditionValue} characters`);
+    }
+  },
+  [NodeTypes.MIN_LENGTH]: (data, prop, conditionValue) => {
+    if (data[prop] && data[prop].length < conditionValue) {
+      throw createErrorData(`$label must be at least ${conditionValue} characters`);
+    }
+  },
+  [NodeTypes.ENUM]: (data, prop, conditionValue) => {
+    if (!conditionValue.includes(data[prop])) {
+      throw createErrorData(`$label must be one of: ${conditionValue.join(', ')}`);
+    }
+  },
+
+  
 };

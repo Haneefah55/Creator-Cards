@@ -5,6 +5,9 @@ const identifierType = require('./identifier-type');
 const identifierAttribute = require('./identifier-attribute');
 const between = require('./between');
 const required = require('./required');
+const maxLength = require('./max-length'); 
+const minLength = require('./min-length');  
+const enumRule = require('./enum');          
 
 module.exports = {
   [NodeTypes.IDENTIFIER]: identifier,
@@ -13,4 +16,7 @@ module.exports = {
   [NodeTypes.BETWEEN]: between,
   [NodeTypes.REQUIRED]: required,
   [NodeTypes.IDENTIFIER_ATTRIBUTE]: identifierAttribute,
+  [NodeTypes.MAX_LENGTH]: maxLength,
+  [NodeTypes.MIN_LENGTH]: minLength,
+  [NodeTypes.ENUM]: enumRule,
 };

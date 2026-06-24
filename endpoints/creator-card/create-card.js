@@ -1,10 +1,11 @@
 const { createHandler } = require('@app-core/server');
 const { createCreatorCard } = require('@app/services');
+const { normalizeKeys }= require('@app/middlewares');
 
 module.exports = createHandler({
   path: '/creator-cards',
   method: 'post',
-  middlewares: [],
+  middlewares: [normalizeKeys],
   async handler(rc, helpers) {
     const response = await createCreatorCard(rc.body);
     return {

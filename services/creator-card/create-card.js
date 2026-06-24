@@ -3,46 +3,60 @@ const { throwAppError } = require('@app-core/errors');
 const { ulid } = require('ulid');
 const { CreatorCard } = require('@app/models');
 
-{/***
-const createSpec = `root {
-  title string required minLength(3) maxLength(100)
-  description string maxLength(500)
-  slug string minLength(5) maxLength(50)
-  creator_reference string required length(20)
-  links any
-  service_rates any
-  status enum(draft, published) required
-  access_type enum(public, private)
-  access_code string length(6)
-}`;
-**/}
 
 const createSpec = `root {
-  title string required minLength(3) maxLength(100)
-  description string maxLength(500)
-  slug string minLength(5) maxLength(50)
-  creator_reference string required length(20)
-
-  links is an array of object {
-    title string required
-    url string required
+  title is a required string {
+    has min length of 3
+    has max length of 100
   }
-
-  service_rates is an object {
-    currency string required
-
-    rates is an array of object {
-      name string required
-      amount number required
+  description is a string {
+    has max length of 500
+  }
+  slug is a string {
+    has min length of 5
+    has max length of 50
+  }
+  creator_reference is a required string {
+    has min length of 20
+    has max length of 20
+  }
+  status is a required string {
+    is one of: draft, published
+  }
+  access_type is a string {
+    is one of: public, private
+  }
+  access_code is a string {
+    has min length of 6
+    has max length of 6
+  }
+  links is an array {
+    title is a required string {
+      has min length of 1
+      has max length of 100
+    }
+    url is a required string {
+      has max length of 200
     }
   }
-
-  status enum(draft, published) required
-  access_type enum(public, private)
-  access_code string length(6)
+  service_rates is an object {
+    currency is a required string {
+      is one of: NGN, USD, GBP, GHS
+    }
+    rates is a required array {
+      name is a required string {
+        has min length of 3
+        has max length of 100
+      }
+      description is a string {
+        has max length of 250
+      }
+      amount is a required number {
+        is between 1 and 2147483647
+      }
+    }
+  }
 }`;
-
-  
 
 // Parse once outside the function
 const parsedSpec = validator.parse(createSpec);
@@ -66,6 +80,9 @@ async function createCreatorCard(serviceData) {
 
   //convert all input to lowercase
   const normalizeBody = lowercaseKeys(serviceData)
+
+  console.log('parsedSpec', JSON.stringify(parsedSpec, null, 2));
+console.log('normalizeBody', JSON.stringify(normalizeBody, null, 2));
   // Validate fields
   const validatedData = validator.validate(normalizeBody, parsedSpec);
 

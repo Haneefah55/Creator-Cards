@@ -230,6 +230,46 @@ syntaxRegexes.push({
   ],
 });
 
+
+// Add enum regex
+const enumRegex = /^is\s+one\s+of\s*:\s*(.+)$/;
+syntaxRegexes.push({
+  nodeType: 'enum',
+  regex: enumRegex,
+  matchMap: [
+    {
+      name: 'enumValues',
+      matchIndex: 1,
+    },
+  ],
+});
+
+// Add maxLength regex
+const maxLengthRegex = /^has\s+max\s+length\s+of\s+([0-9]+)$/;
+syntaxRegexes.push({
+  nodeType: 'max-length',
+  regex: maxLengthRegex,
+  matchMap: [
+    {
+      name: 'maxLength',
+      matchIndex: 1,
+    },
+  ],
+});
+
+// Add minLength regex
+const minLengthRegex = /^has\s+min\s+length\s+of\s+([0-9]+)$/;
+syntaxRegexes.push({
+  nodeType: 'min-length',
+  regex: minLengthRegex,
+  matchMap: [
+    {
+      name: 'minLength',
+      matchIndex: 1,
+    },
+  ],
+});
+
 const closeOpenedScopeRegex = `^}$`;
 syntaxRegexes.push({
   nodeType: 'close-scope',
