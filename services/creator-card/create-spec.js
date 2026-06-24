@@ -1,3 +1,5 @@
+
+
 const spec = {
   isRoot: true,
   children: [
@@ -123,4 +125,5 @@ const spec = {
   ],
 };
 
-module.exports = spec
+
+module.exports = spec;

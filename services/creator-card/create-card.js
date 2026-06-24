@@ -2,8 +2,7 @@ const validator = require('@app-core/validator');
 const { throwAppError } = require('@app-core/errors');
 const { ulid } = require('ulid');
 const { CreatorCardModel } = require('@app/models');
-
-const { CreateSpec } = require('@app/services')
+const CreateSpec = require('./create-spec');
 
 
 const createSpec = `root {
