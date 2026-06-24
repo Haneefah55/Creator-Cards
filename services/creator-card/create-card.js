@@ -83,12 +83,8 @@ async function createCreatorCard(serviceData) {
   //convert all input to lowercase
   //const normalizeBody = lowercaseKeys(serviceData)
 
-  try {
-  const parsedSpec = validator.parse(createSpec);
+  const parsedSpec validator.parse(createSpec);
   console.log('SPEC PARSED OK', JSON.stringify(parsedSpec, null, 2));
-} catch(err) {
-  console.log('SPEC PARSE ERROR:', err.message);
-}
 
   // Validate fields
   const validatedData = validator.validate(serviceData, parsedSpec);
