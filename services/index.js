@@ -7,5 +7,4 @@ module.exports = {
   createCreatorCard,
   retrieveCreatorCard,
   deleteCreatorCard,
-  CreateSpec
 };
