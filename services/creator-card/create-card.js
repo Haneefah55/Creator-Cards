@@ -59,7 +59,15 @@ const createSpec = `root {
 }`;
 
 // Parse once outside the function
-const parsedSpec = validator.parse(createSpec);
+//const parsedSpec = validator.parse(createSpec);
+
+try {
+  const parsedSpec = validator.parse(createSpec);
+  console.log('SPEC PARSED OK', JSON.stringify(parsedSpec, null, 2));
+} catch(err) {
+  console.log('SPEC PARSE ERROR:', err.message);
+}
+
 
 function lowercaseKeys(obj) {
   if (Array.isArray(obj)) {
