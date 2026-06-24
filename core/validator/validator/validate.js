@@ -36,9 +36,9 @@ function validate(data, rootNode, opts) {
       if (node.children?.length) {
         try {
           if (Array.isArray(nodeData)) {
-            nodeData = nodeData.map((el) => validate(el, node));
+            nodeData = nodeData.map((el) => validate(el, node, opts));
           } else {
-            nodeData = validate(nodeData, node);
+            nodeData = validate(nodeData, node, opts);
           }
         } catch (err) {
           if (err.isValidationError) {
