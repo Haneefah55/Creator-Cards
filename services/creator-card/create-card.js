@@ -61,12 +61,6 @@ const createSpec = `root {
 // Parse once outside the function
 //const parsedSpec = validator.parse(createSpec);
 
-try {
-  const parsedSpec = validator.parse(createSpec);
-  console.log('SPEC PARSED OK', JSON.stringify(parsedSpec, null, 2));
-} catch(err) {
-  console.log('SPEC PARSE ERROR:', err.message);
-}
 
 
 function lowercaseKeys(obj) {
@@ -87,12 +81,17 @@ function lowercaseKeys(obj) {
 async function createCreatorCard(serviceData) {
 
   //convert all input to lowercase
-  const normalizeBody = lowercaseKeys(serviceData)
+  //const normalizeBody = lowercaseKeys(serviceData)
 
-  console.log('parsedSpec', JSON.stringify(parsedSpec, null, 2));
-console.log('normalizeBody', JSON.stringify(normalizeBody, null, 2));
+  try {
+  const parsedSpec = validator.parse(createSpec);
+  console.log('SPEC PARSED OK', JSON.stringify(parsedSpec, null, 2));
+} catch(err) {
+  console.log('SPEC PARSE ERROR:', err.message);
+}
+
   // Validate fields
-  const validatedData = validator.validate(normalizeBody, parsedSpec);
+  const validatedData = validator.validate(serviceData, parsedSpec);
 
   console.log("validateData", validatedData)
 
