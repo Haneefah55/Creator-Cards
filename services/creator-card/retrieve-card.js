@@ -1,12 +1,12 @@
 const { throwAppError } = require('@app-core/errors');
-const { CreatorCard } = require('@app/models');
+const { CreatorCardModel } = require('@app/models');
 
 async function retrieveCreatorCard(params, query) {
   const { slug } = params;
   const { access_code } = query;
 
   // Find card that is not deleted
-  const card = await CreatorCard.findOne({ slug, deleted: null });
+  const card = await CreatorCardModel.findOne({ slug, deleted: null });
 
   // No card found
   if (!card) {

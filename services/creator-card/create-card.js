@@ -152,13 +152,13 @@ if (normalizeBody.service_rates) {
     }
 
     // check if auto-generated slug is taken
-    const existing = await CreatorCard.findOne({ slug, deleted: null });
+    const existing = await CreatorCardModel.findOne({ slug, deleted: null });
     if (existing) {
       slug = slug + '-' + Math.random().toString(36).substring(2, 8);
     }
   } else {
     // if slug was provided, check uniqueness
-    const existing = await CreatorCard.findOne({ slug, deleted: null });
+    const existing = await CreatorCardModel.findOne({ slug, deleted: null });
     if (existing) {
       throwAppError('Slug is already taken', 'SL02');
     }
