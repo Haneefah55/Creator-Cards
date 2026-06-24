@@ -43,6 +43,5 @@ const ERROR_STATUS_CODE_MAPPING = {
   AC05: 400,
   SL02: 400,
 };
-};
 
 module.exports = { ERROR_CODE, ERROR_STATUS_CODE_MAPPING };
